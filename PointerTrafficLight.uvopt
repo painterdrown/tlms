@@ -304,10 +304,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>12</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>33</TopLine>
-      <CurrentLine>83</CurrentLine>
+      <TopLine>65</TopLine>
+      <CurrentLine>67</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\UART.c</PathWithFileName>
       <FilenameWithoutPath>UART.c</FilenameWithoutPath>

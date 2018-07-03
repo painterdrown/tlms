@@ -115,6 +115,10 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>DAC_OUTPUT_SEL</Key>
           <Name>1</Name>
         </SetRegEntry>
@@ -238,7 +242,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>275</TopLine>
+      <TopLine>274</TopLine>
       <CurrentLine>277</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\startup.s</PathWithFileName>
@@ -268,10 +272,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>4</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>93</TopLine>
-      <CurrentLine>130</CurrentLine>
+      <CurrentLine>128</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\PointerTrafficLight.c</PathWithFileName>
       <FilenameWithoutPath>PointerTrafficLight.c</FilenameWithoutPath>
@@ -302,7 +306,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>66</TopLine>
+      <TopLine>64</TopLine>
       <CurrentLine>67</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\UART.c</PathWithFileName>

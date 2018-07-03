@@ -272,10 +272,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>48</ColumnNumber>
+      <ColumnNumber>3</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>76</TopLine>
-      <CurrentLine>139</CurrentLine>
+      <TopLine>25</TopLine>
+      <CurrentLine>130</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\PointerTrafficLight.c</PathWithFileName>
       <FilenameWithoutPath>PointerTrafficLight.c</FilenameWithoutPath>
@@ -306,7 +306,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>51</TopLine>
+      <TopLine>66</TopLine>
       <CurrentLine>67</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\UART.c</PathWithFileName>

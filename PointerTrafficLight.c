@@ -50,6 +50,7 @@ struct State {
   uint32_t Time;           // 
 	uint32_t Color;
   const struct State *Next[8];
+	char *message;
 };  // depends on 3-bit input
 typedef const struct State STyp;
 	
@@ -66,16 +67,16 @@ typedef const struct State STyp;
 #define RED       0x02
 #define GREEN     0x08
 #define YELLOW    0x0A
-#define WHITE     0x0E
+#define BLUE      0x04
 #define WHEELSIZE 4           // must be an integer multiple of 2
-const long COLORWHEEL[WHEELSIZE] = {GREEN, YELLOW, RED, WHITE};  // red, yellow, green, white
+const long COLORWHEEL[WHEELSIZE] = {GREEN, YELLOW, RED, BLUE};  // red, yellow, green, white
 
 STyp FSM[5]={
- {0x21, 10, GREEN,  {goN, waitN, goN,   waitN, Emer, Emer, Emer, Emer}},
- {0x22, 03, YELLOW, {goE, goE,   goE,   goE,   Emer, Emer, Emer, Emer}},
- {0x0C, 10, RED,    {goE, goE,   waitE, waitE, Emer, Emer, Emer, Emer}},
- {0x14, 03, YELLOW, {goN, goN,   goN,   goN,   Emer, Emer, Emer, Emer}},
- {0x40, 10, WHITE,  {goN, goN,   goN,   goN,   Emer, Emer, Emer, Emer}}
+	{0x21, 5, GREEN,  {goN, waitN, goN,   waitN, Emer, Emer, Emer, Emer}, "[goN]   You are free to go."},
+	{0x22, 2, YELLOW, {goE, goE,   goE,   goE,   Emer, Emer, Emer, Emer}, "[waitN] You should hold on for 2 seconds."},
+	{0x0C, 5, RED,    {goE, goE,   waitE, waitE, Emer, Emer, Emer, Emer}, "[goE]   You need to wait for 5 seconds."},
+	{0x14, 2, YELLOW, {goN, goN,   goN,   goN,   Emer, Emer, Emer, Emer}, "[waitE] You should hold on for 2 seconds."},
+	{0x40, 5, BLUE,   {goN, goN,   goN,   goN,   Emer, Emer, Emer, Emer}, "[Emer]  You should leave as soon as possible!"}
 };
 
 
@@ -105,37 +106,51 @@ void Ports_Init(void) {
   GPIO_PORTB_AMSEL_R &= ~0x7F; // disable analog functionality on PB6-0
 }
 
-uint32_t GetInput() {
-	static char input[3];             // global to assist in debugging
-	uint32_t result = 0;
-	OutCRLF();
-	UART_OutString("please input!\n");
-	input[0] = UART_InChar();
-	input[1] = UART_InChar();
-	input[2] = UART_InChar();
-	if (input[0]=='1') result |= 0x4;
-	if (input[1]=='1') result |= 0x2;
-	if (input[2]=='1') result |= 0x1;
-	return result;
-}
-
 int main(void){
 	STyp *Pt;                    // state pointer
   uint32_t Input;
-  char ch;
-  uint32_t n;
 
   PLL_Init();                  // configure for 50 MHz clock
   SysTick_Init();              // initialize SysTick timer
 	Ports_Init();                // initialize GPIO ports
 	UART_Init();                 // initialize UART
 
-  Pt = goN;                    // initial state: Green north; Red east
-	while(1) {
-		LIGHT = Pt->Out;           // set lights to current state's Out value
-		LEDS = Pt->Color;          // set LED color
-		WaitSeconds(Pt->Time);
-		if (Pt->Color != YELLOW) Input = GetInput();
-    Pt = Pt->Next[Input];      // transition to next state
-  }
+	Input = 0x3;
+	// green 5s
+  Pt = goN;
+	LIGHT = Pt->Out;
+	LEDS = Pt->Color;
+	OutCRLF();
+	UART_OutString(Pt->message);
+	WaitSeconds(Pt->Time);
+	// yellow 2s
+	Pt = Pt->Next[Input];
+	LIGHT = Pt->Out;
+	LEDS = Pt->Color;
+	OutCRLF();
+	UART_OutString(Pt->message);
+	WaitSeconds(Pt->Time);
+	// red 5s
+	Pt = Pt->Next[Input];
+	LIGHT = Pt->Out;
+	LEDS = Pt->Color;
+	OutCRLF();
+	UART_OutString(Pt->message);
+	WaitSeconds(Pt->Time);
+	// green 5s
+	Pt = goN;
+	LIGHT = Pt->Out;
+	LEDS = Pt->Color;
+	OutCRLF();
+	UART_OutString(Pt->message);
+	WaitSeconds(Pt->Time);
+	// Emer
+	Pt = Emer;
+	LIGHT = Pt->Out;
+	LEDS = Pt->Color;
+	OutCRLF();
+	UART_OutString(Pt->message);
+	WaitSeconds(Pt->Time);
+
+	while(1) {}
 }

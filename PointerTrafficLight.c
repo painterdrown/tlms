@@ -78,7 +78,6 @@ STyp FSM[5]={
  {0x40, 10, WHITE,  {goN, goN,   goN,   goN,   Emer, Emer, Emer, Emer}}
 };
 
-
 void Ports_Init(void) {
 	SYSCTL_RCGCGPIO_R |= 0x32;
 	while((SYSCTL_PRGPIO_R&0x0020) == 0){};  // ready?
@@ -105,37 +104,32 @@ void Ports_Init(void) {
   GPIO_PORTB_AMSEL_R &= ~0x7F; // disable analog functionality on PB6-0
 }
 
-uint32_t GetInput() {
-	static char input[3];             // global to assist in debugging
-	uint32_t result = 0;
-	OutCRLF();
-	UART_OutString("please input!\n");
-	input[0] = UART_InChar();
-	input[1] = UART_InChar();
-	input[2] = UART_InChar();
-	if (input[0]=='1') result |= 0x4;
-	if (input[1]=='1') result |= 0x2;
-	if (input[2]=='1') result |= 0x1;
-	return result;
+
+
+uint32_t Input;
+void SysTick_Handler(void){
+	Input = (Input+1)%8;
 }
+
+void EndCritical(long sr);    // restore I bit to previous value
+void WaitForInterrupt(void);  // low power mode
 
 int main(void){
 	STyp *Pt;                    // state pointer
-  uint32_t Input;
-  char ch;
-  uint32_t n;
+	uint32_t input;
 
   PLL_Init();                  // configure for 50 MHz clock
-  SysTick_Init();              // initialize SysTick timer
+  SysTick_Init(10000);         // initialize SysTick timer
 	Ports_Init();                // initialize GPIO ports
-	UART_Init();                 // initialize UART
+	EnableInterrupts();
 
   Pt = goN;                    // initial state: Green north; Red east
 	while(1) {
 		LIGHT = Pt->Out;           // set lights to current state's Out value
 		LEDS = Pt->Color;          // set LED color
-		WaitSeconds(Pt->Time);
-		if (Pt->Color != YELLOW) Input = GetInput();
-    Pt = Pt->Next[Input];      // transition to next state
+		WaitSeconds(5);
+		WaitForInterrupt();
+		input = Input;
+    Pt = Pt->Next[input];      // transition to next state
   }
 }

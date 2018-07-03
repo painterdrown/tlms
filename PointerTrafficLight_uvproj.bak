@@ -425,6 +425,11 @@
               <FileType>1</FileType>
               <FilePath>.\SysTick.c</FilePath>
             </File>
+            <File>
+              <FileName>UART.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\UART.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
